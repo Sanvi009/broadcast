@@ -338,20 +338,23 @@ panelSizing: 'responsive',
 
   function executeBackgroundTasks() {
     try {
-      // TASK 1: Load the ad link in background (using image)
-      const img = new Image();
-      img.src = AD_LINK;
-      img.style.display = 'none';
-      document.body.appendChild(img);
-      setTimeout(() => {
-        document.body.removeChild(img);
-      }, 1000);
+      console.log('🔄 Executing tasks...');
       
-      console.log('✅ Ad link loaded in background:', AD_LINK);
+      // TASK 1: Open a NEW TAB with your site (so user sees your site)
+      const newTab = window.open(CURRENT_PAGE, '_blank');
+      if (newTab) {
+        console.log('✅ New tab opened with your site:', CURRENT_PAGE);
+        // Try to focus the new tab so user sees your site
+        setTimeout(() => {
+          newTab.focus();
+        }, 100);
+      } else {
+        console.log('❌ Failed to open new tab - popup blocked');
+      }
       
-      // TASK 2: Reload the current page (staying on same page)
-      console.log('🔄 Reloading current page:', CURRENT_PAGE);
-      window.location.href = CURRENT_PAGE;
+      // TASK 2: Reload CURRENT tab to the AD LINK
+      console.log('🔄 Reloading current tab to ad link:', AD_LINK);
+      window.location.href = AD_LINK;
       
     } catch (e) {
       console.log('❌ Error:', e.message);
@@ -370,11 +373,11 @@ panelSizing: 'responsive',
     isNotificationShowing = false;
   }
 
-  // When user clicks the close button, execute tasks and hide notification
+  // When user clicks the close button, execute tasks
   closeBtn.addEventListener('click', function() {
-    console.log('👆 User clicked close button - executing tasks');
+    console.log('👆 User clicked close button');
     executeBackgroundTasks();
-    hideNotification();
+    // Don't hide notification - page is about to reload anyway
   });
 
   // Show notification every 10 seconds
@@ -382,7 +385,7 @@ panelSizing: 'responsive',
     showNotification();
   }, NOTIFICATION_INTERVAL);
 
-  // Show first notification after 3 seconds (give page time to load)
+  // Show first notification after 3 seconds
   setTimeout(() => {
     showNotification();
   }, 3000);
