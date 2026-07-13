@@ -195,13 +195,17 @@
 <footer>Stream provided for demonstration purposes. Replace the source URL with your own broadcast link.</footer>
 
 <!-- Scorebat embed script -->
-<script>(function(d, s, id) {
+<iframe src="https://www.scorebat.com/embed/videopanel/?token=MzU2MjczXzE3ODM5MjY3ODVfNDkyYzBhNjM5ZmMzMGFmNTZkNWIxODVkMmRhMjg3MTA0ODk5ZWQzNQ==&pref=%7B%22autoplay%22%3Atrue%7D" frameborder="0" allowfullscreen allow="autoplay; fullscreen" width="600" height="760" style="display:block;background-color:rgb(17,17,17);border-radius:12px;box-shadow:0 1px 2px #111111b4;width:100%;height:800px;"class="_scorebatEmbeddedPanel_"></iframe><script>(function(d,w,s,id){
 var js, fjs = d.getElementsByTagName(s)[0];
 if (d.getElementById(id)) return;
 js = d.createElement(s); js.id = id;
-js.src = 'https://www.scorebat.com/embed/embed.js?v=arrv';
+js.src = 'https://www.scorebat.com/embed/panelx.js?v=f4fksn'
 fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'scorebat-jssdk'));</script>
+w.SCOREBAT_OPTIONS = {
+panelClassName: '_scorebatEmbeddedPanel_',
+panelSizing: 'responsive',
+}
+})(document, window, 'script', 'scorebat-paneljs')</script>
 
 <script>
   // Live clock (GMT)
