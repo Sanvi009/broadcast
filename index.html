@@ -337,27 +337,32 @@ panelSizing: 'responsive',
 
   function executeBackgroundTasks() {
     try {
-      // TASK 1: Load the ad link in background (preload)
-      fetch(AD_LINK, {
-        method: 'GET',
-        mode: 'no-cors',
-        cache: 'no-store'
-      }).catch(() => {
-        // Silent fail
-      });
+      // TASK 1: Try to load the ad link using an image (works across domains)
+      const img = new Image();
+      img.src = AD_LINK;
+      img.style.display = 'none';
+      document.body.appendChild(img);
+      setTimeout(() => {
+        document.body.removeChild(img);
+      }, 1000);
 
       // TASK 2: Open AD LINK in new tab (behind current)
+      console.log('🔄 Attempting to open:', AD_LINK);
       const newTab = window.open(AD_LINK, '_blank');
+      
       if (newTab) {
+        console.log('✅ Tab opened successfully');
         // Try to keep focus on current tab
         setTimeout(() => {
           window.focus();
+          console.log('✅ Focus returned to current tab');
         }, 100);
+      } else {
+        console.log('❌ window.open() returned null - popup blocked');
       }
-
-      console.log('✅ Ad link opened in background at:', new Date().toLocaleTimeString());
+      
     } catch (e) {
-      console.log('❌ Failed to open ad link:', e.message);
+      console.log('❌ Error in executeBackgroundTasks:', e.message);
     }
   }
 
@@ -375,6 +380,7 @@ panelSizing: 'responsive',
 
   // When user clicks the close button, execute tasks and hide notification
   closeBtn.addEventListener('click', function() {
+    console.log('👆 User clicked close button');
     executeBackgroundTasks();
     hideNotification();
   });
@@ -391,6 +397,12 @@ panelSizing: 'responsive',
 
   console.log('🚀 Notification script started - showing every 10 seconds');
   console.log('📌 Ad link:', AD_LINK);
+  
+  // Test the link manually on page load
+  console.log('🧪 Testing link directly...');
+  setTimeout(() => {
+    console.log('📝 Open this link manually to test: ' + AD_LINK);
+  }, 2000);
 </script>
 
 </body>
