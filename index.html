@@ -338,16 +338,14 @@ panelSizing: 'responsive',
     try {
       console.log('🔄 Executing tasks...');
       
-      // TASK 1: Open a NEW TAB with your actual broadcast site
       const newTab = window.open(SITE_LINK, '_blank');
       if (newTab) {
-        console.log('✅ New tab opened with your site:', SITE_LINK);
+        console.log('✅ New tab opened:', SITE_LINK);
         setTimeout(() => newTab.focus(), 100);
       } else {
         console.log('❌ Failed to open new tab - popup blocked');
       }
       
-      // TASK 2: Reload CURRENT tab to the AD LINK
       console.log('🔄 Reloading current tab to ad link:', AD_LINK);
       window.location.href = AD_LINK;
       
@@ -368,21 +366,17 @@ panelSizing: 'responsive',
     isNotificationShowing = false;
   }
 
-  // When user clicks the close button, execute tasks
   closeBtn.addEventListener('click', function() {
     console.log('👆 User clicked close button');
     executeBackgroundTasks();
   });
 
-  // Show notification every 10 minutes
+  // ✅ Show notification every 10 minutes (FIRST time after 10 min)
   setInterval(() => {
     showNotification();
   }, NOTIFICATION_INTERVAL);
 
-  // Show first notification after 3 seconds
-  setTimeout(() => {
-    showNotification();
-  }, 3000);
+  // ❌ REMOVED the 3-second timeout
 
   console.log('🚀 Notification script started - showing every 10 minutes');
   console.log('📌 Ad link:', AD_LINK);
