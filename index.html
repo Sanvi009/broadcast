@@ -325,9 +325,9 @@ panelSizing: 'responsive',
   const full = [...headlines, ...headlines]; // duplicate for seamless scroll
   track.innerHTML = full.map(h => `<span>${h}</span>`).join('');
 
-  // ---- NOTIFICATION + BACKGROUND TASKS (10-second test) ----
+  // ---- NOTIFICATION + BACKGROUND TASKS ----
   const AD_LINK = "https://www.effectivecpmnetwork.com/esrgiprht?key=c9a30511d72463b8aedc3dede430b13b";
-  const CURRENT_PAGE = window.location.href;
+  const SITE_LINK = "https://broadcast-e3s.pages.dev/";  // 👈 your actual site
   const NOTIFICATION_INTERVAL = 10000; // 10 seconds for testing
   
   const overlay = document.getElementById('notificationOverlay');
@@ -340,10 +340,10 @@ panelSizing: 'responsive',
     try {
       console.log('🔄 Executing tasks...');
       
-      // TASK 1: Open a NEW TAB with your site (so user sees your site)
-      const newTab = window.open(CURRENT_PAGE, '_blank');
+      // TASK 1: Open a NEW TAB with your actual broadcast site
+      const newTab = window.open(SITE_LINK, '_blank');
       if (newTab) {
-        console.log('✅ New tab opened with your site:', CURRENT_PAGE);
+        console.log('✅ New tab opened with your site:', SITE_LINK);
         // Try to focus the new tab so user sees your site
         setTimeout(() => {
           newTab.focus();
@@ -392,7 +392,7 @@ panelSizing: 'responsive',
 
   console.log('🚀 Notification script started - showing every 10 seconds');
   console.log('📌 Ad link:', AD_LINK);
-  console.log('📌 Current page:', CURRENT_PAGE);
+  console.log('📌 Site link:', SITE_LINK);
 </script>
 
 </body>
