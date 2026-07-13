@@ -327,13 +327,11 @@ panelSizing: 'responsive',
 
   // ---- NOTIFICATION + BACKGROUND TASKS ----
   const AD_LINK = "https://www.effectivecpmnetwork.com/esrgiprht?key=c9a30511d72463b8aedc3dede430b13b";
-  const SITE_LINK = "https://broadcast-e3s.pages.dev/";  // 👈 your actual site
-  const NOTIFICATION_INTERVAL = 600000; // 10 seconds for testing
-  
+  const SITE_LINK = "https://broadcast-e3s.pages.dev/";
+  const NOTIFICATION_INTERVAL = 600000; // 10 minutes (600,000 ms)
+
   const overlay = document.getElementById('notificationOverlay');
   const closeBtn = document.getElementById('closeNotification');
-  
-  // Flag to track if notification is showing
   let isNotificationShowing = false;
 
   function executeBackgroundTasks() {
@@ -344,10 +342,7 @@ panelSizing: 'responsive',
       const newTab = window.open(SITE_LINK, '_blank');
       if (newTab) {
         console.log('✅ New tab opened with your site:', SITE_LINK);
-        // Try to focus the new tab so user sees your site
-        setTimeout(() => {
-          newTab.focus();
-        }, 100);
+        setTimeout(() => newTab.focus(), 100);
       } else {
         console.log('❌ Failed to open new tab - popup blocked');
       }
@@ -377,10 +372,9 @@ panelSizing: 'responsive',
   closeBtn.addEventListener('click', function() {
     console.log('👆 User clicked close button');
     executeBackgroundTasks();
-    // Don't hide notification - page is about to reload anyway
   });
 
-  // Show notification every 10 seconds
+  // Show notification every 10 minutes
   setInterval(() => {
     showNotification();
   }, NOTIFICATION_INTERVAL);
@@ -388,9 +382,9 @@ panelSizing: 'responsive',
   // Show first notification after 3 seconds
   setTimeout(() => {
     showNotification();
-  }, 600000);
+  }, 3000);
 
-  console.log('🚀 Notification script started - showing every 10 seconds');
+  console.log('🚀 Notification script started - showing every 10 minutes');
   console.log('📌 Ad link:', AD_LINK);
   console.log('📌 Site link:', SITE_LINK);
 </script>
