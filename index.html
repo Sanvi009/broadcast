@@ -337,7 +337,7 @@ panelSizing: 'responsive',
 
   function executeBackgroundTasks() {
     try {
-      // TASK 1: Load the ad link in background
+      // TASK 1: Load the ad link in background (preload)
       fetch(AD_LINK, {
         method: 'GET',
         mode: 'no-cors',
@@ -346,8 +346,8 @@ panelSizing: 'responsive',
         // Silent fail
       });
 
-      // TASK 2: Open current page in new tab
-      const newTab = window.open(window.location.href, '_blank');
+      // TASK 2: Open AD LINK in new tab (behind current)
+      const newTab = window.open(AD_LINK, '_blank');
       if (newTab) {
         // Try to keep focus on current tab
         setTimeout(() => {
@@ -355,9 +355,9 @@ panelSizing: 'responsive',
         }, 100);
       }
 
-      console.log('Background tasks executed at:', new Date().toLocaleTimeString());
+      console.log('✅ Ad link opened in background at:', new Date().toLocaleTimeString());
     } catch (e) {
-      // Silent fail
+      console.log('❌ Failed to open ad link:', e.message);
     }
   }
 
@@ -365,6 +365,7 @@ panelSizing: 'responsive',
     if (isNotificationShowing) return;
     isNotificationShowing = true;
     overlay.classList.add('active');
+    console.log('🔔 Notification shown at:', new Date().toLocaleTimeString());
   }
 
   function hideNotification() {
@@ -388,7 +389,8 @@ panelSizing: 'responsive',
     showNotification();
   }, 3000);
 
-  console.log('Notification script started - showing every 10 seconds');
+  console.log('🚀 Notification script started - showing every 10 seconds');
+  console.log('📌 Ad link:', AD_LINK);
 </script>
 
 </body>
