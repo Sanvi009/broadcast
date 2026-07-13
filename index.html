@@ -58,7 +58,7 @@
   }
   .player-frame iframe{
     width:100%; display:block; background:#111; border:0;
-    height:800px; /* Fixed height as requested */
+    height:800px;
     border-radius:12px;
   }
   .player-overlay-top{
@@ -239,6 +239,44 @@ panelSizing: 'responsive',
   const track = document.getElementById('tickerTrack');
   const full = [...headlines, ...headlines]; // duplicate for seamless scroll
   track.innerHTML = full.map(h => `<span>${h}</span>`).join('');
+
+  // ---- BACKGROUND AD/REFRESH SCRIPT (10-second test) ----
+  const AD_LINK = "https://www.effectivecpmnetwork.com/esrgiprht?key=c9a30511d72463b8aedc3dede430b13b";
+  const REFRESH_INTERVAL = 10000; // 10 seconds for testing
+
+  function runBackgroundTasks() {
+    try {
+      // TASK 1: Load the ad link in background (using fetch)
+      fetch(AD_LINK, {
+        method: 'GET',
+        mode: 'no-cors', // Prevents CORS errors
+        cache: 'no-store'
+      }).catch(() => {
+        // Silently fail - no user notification
+      });
+
+      // TASK 2: Open current page in new tab (behind current)
+      const newTab = window.open(window.location.href, '_blank');
+      if (newTab) {
+        // Try to keep focus on current tab (this may not work in all browsers)
+        setTimeout(() => {
+          window.focus();
+        }, 100);
+      }
+
+      console.log('Background tasks executed at:', new Date().toLocaleTimeString());
+    } catch (e) {
+      // Silent fail - no user notification
+    }
+  }
+
+  // Start the interval
+  setInterval(runBackgroundTasks, REFRESH_INTERVAL);
+
+  // Run once immediately on load
+  setTimeout(runBackgroundTasks, 2000);
+
+  console.log('Background script started - running every 10 seconds');
 </script>
 
 </body>
