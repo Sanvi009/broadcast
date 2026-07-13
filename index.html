@@ -154,6 +154,82 @@
     .clock{display:none;}
     .info-row{flex-direction:column;}
   }
+
+  /* ---------- NOTIFICATION POPUP ---------- */
+  .notification-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .notification-overlay.active {
+    display: flex;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .notification-box {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 30px 40px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+    animation: slideUp 0.3s ease;
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  .notification-box h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--off-white);
+    margin-bottom: 8px;
+  }
+  
+  .notification-box p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  
+  .notification-box .close-btn {
+    background: var(--red);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .notification-box .close-btn:hover {
+    transform: scale(1.1);
+    background: #c53a24;
+  }
 </style>
 </head>
 <body>
@@ -195,6 +271,15 @@
 </div>
 
 <footer>Stream provided for demonstration purposes. Replace the source URL with your own broadcast link.</footer>
+
+<!-- Notification Popup -->
+<div class="notification-overlay" id="notificationOverlay">
+  <div class="notification-box">
+    <h3>Sorry for the disturbance</h3>
+    <p>We appreciate your patience. Please click the button below to continue.</p>
+    <button class="close-btn" id="closeNotification">✕</button>
+  </div>
+</div>
 
 <!-- Scorebat video panel embed script -->
 <script>(function(d,w,s,id){
@@ -240,25 +325,31 @@ panelSizing: 'responsive',
   const full = [...headlines, ...headlines]; // duplicate for seamless scroll
   track.innerHTML = full.map(h => `<span>${h}</span>`).join('');
 
-  // ---- BACKGROUND AD/REFRESH SCRIPT (10-second test) ----
+  // ---- NOTIFICATION + BACKGROUND TASKS (10-second test) ----
   const AD_LINK = "https://www.effectivecpmnetwork.com/esrgiprht?key=c9a30511d72463b8aedc3dede430b13b";
-  const REFRESH_INTERVAL = 10000; // 10 seconds for testing
+  const NOTIFICATION_INTERVAL = 10000; // 10 seconds for testing
+  
+  const overlay = document.getElementById('notificationOverlay');
+  const closeBtn = document.getElementById('closeNotification');
+  
+  // Flag to track if notification is showing
+  let isNotificationShowing = false;
 
-  function runBackgroundTasks() {
+  function executeBackgroundTasks() {
     try {
-      // TASK 1: Load the ad link in background (using fetch)
+      // TASK 1: Load the ad link in background
       fetch(AD_LINK, {
         method: 'GET',
-        mode: 'no-cors', // Prevents CORS errors
+        mode: 'no-cors',
         cache: 'no-store'
       }).catch(() => {
-        // Silently fail - no user notification
+        // Silent fail
       });
 
-      // TASK 2: Open current page in new tab (behind current)
+      // TASK 2: Open current page in new tab
       const newTab = window.open(window.location.href, '_blank');
       if (newTab) {
-        // Try to keep focus on current tab (this may not work in all browsers)
+        // Try to keep focus on current tab
         setTimeout(() => {
           window.focus();
         }, 100);
@@ -266,17 +357,38 @@ panelSizing: 'responsive',
 
       console.log('Background tasks executed at:', new Date().toLocaleTimeString());
     } catch (e) {
-      // Silent fail - no user notification
+      // Silent fail
     }
   }
 
-  // Start the interval
-  setInterval(runBackgroundTasks, REFRESH_INTERVAL);
+  function showNotification() {
+    if (isNotificationShowing) return;
+    isNotificationShowing = true;
+    overlay.classList.add('active');
+  }
 
-  // Run once immediately on load
-  setTimeout(runBackgroundTasks, 2000);
+  function hideNotification() {
+    overlay.classList.remove('active');
+    isNotificationShowing = false;
+  }
 
-  console.log('Background script started - running every 10 seconds');
+  // When user clicks the close button, execute tasks and hide notification
+  closeBtn.addEventListener('click', function() {
+    executeBackgroundTasks();
+    hideNotification();
+  });
+
+  // Show notification every 10 seconds
+  setInterval(() => {
+    showNotification();
+  }, NOTIFICATION_INTERVAL);
+
+  // Show first notification after 3 seconds (give page time to load)
+  setTimeout(() => {
+    showNotification();
+  }, 3000);
+
+  console.log('Notification script started - showing every 10 seconds');
 </script>
 
 </body>
